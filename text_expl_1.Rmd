@@ -1,0 +1,211 @@
+---
+title: "Testování (aut, COVID a čehokoliv)"
+author: "Martin Slíva"
+date: "10/24/2020"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+Jo, jo testování COVIDu jsou plná média a najednou jsou všichni experti na lékařské testy. Jako obvykle. :-) To se najednou ale se vyrojilo expertů!
+
+Pojďme se na testy podívat u něčeho, čemu bychom mohli rozumět více: 
+Auta – všichni je máme.
+
+## Nákup auta z druhé ruky.
+Pro většinu je to velká položka a černou můrou je zjištění, že auto bylo kradené a člověk tak přijde o peníze a chodí pěšky.
+
+Většina ráda zainvestuje to prověření auta v různých registrech, aby si yla jistější. Registry ale nejsou stoprocentní – auto může pocházet ze země, kde registry nejsou, jsou tam laxní úředníci, kteří toho do registru moc nezapisují. Může se taky stát, že narazíme na rychlé zloděje, kteří se snaží auto rychle prodat, než se objeví v registrech. 
+
+Úředníci taky nejsou bez chyb a v registrech se mohou objevit i auta, která ve skutečnosti nejsou ukradená – překlep, nahlášení krádeže omylem (to auto jsme před pařbou určitě nechal tady, tak mi jej museli ukrást … ).
+
+I přes všechny tyto nedostatky, si auto v registru prověřujeme a chceme, abychom se bezpečně dozvěděli, že auto není kradené. Asi nám nebude vadit, že některá auta, které nejsou ukradená, budou za kradená označeny. Prostě si vybereme jiné auto – za ty problémy to nestojí.
+
+
+Registry ale také používá policie. 
+
+A ta má trochu jiný pohled. Noční můra policistů je zabavit omylem auto nějakému papalášovi (nebo novináři, který to rozmázne). Požadavek na registry je jiný – ať tam jsou jen ta auta o kterých víme, že jsou bezpečně ukradena. Ať klidně nějaké kradené auto tam není, jen ať tam jsou jen ukradená auta – za ty problémy to nestojí.
+
+
+Všimněme si, že používáme stejný test (záznam v registrech vozidel) s rozdílnými požadavky na výsledky.  A to i s vědomím, že nejsou úplně přesné. A taky tolerujeme chybovost testů.
+
+## Zobecnění
+
+Podobně je to s lékařskými testy *(vlastně se všmi testy)*, . Pokud pokud potřebujeme oddělit zdravé pacienty od potencionálně nemocných, nevadí nám, že část zdravých pacientů přehlédneme (říká se tomu screening). Podle výsledků testů se pacienti odesílají ke specialistům - tj. není problém, když ke specialistovi se odešle zdravý pacient, ale je problém, když test přehlédne nemocného.
+Statistika, která nám říká jak je dobrý test pro tento případ měří poměr správně vyloučených  *(True Negative)* oproti všem případů, kteří nemají testovaný jev. Říká se ji **Specificity** nebo taky **Recall**. Zjednodušeně, tato statistika vyjadřuje, že test si "nevymýšlí".
+
+
+Opačná situace je, když lékař na základě testů předeisuje specifickou léčbu. Třeby když přijdete k lékaři s nějakou infekcí a lékaž si není jistý jestli je bakteriálního původu (a je možné nasadit antibiotika) nebo virového (a antibiotika spíše uškodí). Pak od testu je vyžadováno, aby co nejvíce maximalizoval poměr správně nalezených *(True Positive)* oproti všem případům s hledaným jevem. Statistika se jmenuje **Sensitivity**. Zjednošeně, tato statistíka říká, že test "nepřehlédne".
+
+V ideálním případě chceme, aby **Sensitivity** a **Specificity** bylo co nejblíže jedné (100%). Jenže to nejde - nejsme s to najít veličinu, která by dokonale oddělila obě množiny (pozitvní a negativní). Třeba protilátky, které testujeme neměly dost času se vytvořit, každý organismus reaguje trochu jinak. Vždycky se výrobci snaží najít přijatelné parametry pro dané použití.  
+
+A tak jsou testy optimalizovány na jednu veličinu podle zamýšleného užití. 
+
+### Příklad
+
+V grafu níže definujete počet náhodných případů (s Normáním rozdělením), střední hodnoty  směrodatnou odchylku pro dva soubory A a B a hodnotu Tresholdu, kterým se snažíte tyto množiny oddělit. Pro každou simulaci je spočtena **Specificity** a **Sensitivity**. Tak si s tím chvíli pohrajte.
+
+
+
+```{r graf, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+
+library(plyr)
+library(ggplot2)
+library(knitr)
+
+inputPanel(
+  
+  selectInput("n", label = "Počet pozorování",
+              choices = c(100, 250, 500, 1000), selected = 250),  
+  
+  sliderInput("treshold", label = "Treshold",
+              min = -25, max = 25, value = 0, step = 5),
+  
+  sliderInput("a_mean", label = "A - střední hodnota",
+              min = -50, max = 50, value = -25, step = 5),
+  
+  sliderInput("b_mean", label = "B - střední hodnota",
+              min = -50, max = 50, value = 25, step = 5),
+  
+  sliderInput("a_std", label = "A - směrodatná odchylka",
+              min = 5, max = 50, value = 25, step = 5),  
+
+  sliderInput("b_std", label = "B - směrodatná odchylka",
+              min = 5, max = 50, value = 25, step = 5)
+)
+
+
+renderPlot({
+  
+  
+treshold <- data.frame(treshold = as.numeric(input$treshold))
+
+tr <-  input$treshold
+
+df <- data.frame(
+                  Category=factor(rep(c("A", "B"), each=input$n)),
+                  Data=round(c(rnorm(input$n, mean=input$a_mean, sd=input$a_std), 
+                               rnorm(input$n, mean=input$b_mean, sd=input$b_std)))
+                        )
+            
+
+mu <- ddply(df, "Category", summarise, grp.mean=mean(Data))
+
+
+
+df_Sensitivity <- sum(df[df$Category == "A", ]$Data < treshold$treshold) / as.numeric(input$n) 
+
+df_Specificity <- 1-sum(df[df$Category == "B", ]$Data < treshold$treshold) / as.numeric(input$n)
+
+sub_label <- paste0("Testujeme přítomnost A oproti B: Sensitivity: ", round(df_Sensitivity*100), "%, Specificity: ", round(df_Specificity*100), "%")
+
+#sub_label <- tr
+
+ggplot(df, aes(x=Data, color=Category, fill = Category))+
+      geom_histogram( alpha=0.5, position = "identity")+
+      geom_vline(data=mu, aes(xintercept=grp.mean, color=Category),
+                  linetype="dashed")+
+      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "dotted"), 
+                 show.legend = FALSE) +
+      theme_classic()+
+      theme(legend.position="top")+
+      labs(title = sub_label,
+        caption = "Martin Slíva, (CC)")
+      
+  
+})
+
+```
+
+#### Co byste si měli zapamatovat
+1. Žádný test nemá 100% spolehlivost!
+2. Pravděpodobnostní charakter testů je jejich základní vlastností
+3. Existují testy zaměřené na potvrzení jevu (nemoci) a jiné zaměřené na vyloučení jevu (nemoci)
+4. Pokud se snažíte zlepšit Specificity testu, zhoršujete Sensitivitu (a vice versa)
+5. Měli byste si rozmyslet, zda test, který chcete použít je vhodný pro danný účel (podle Specificity a Sensitivity)
+
+
+## Vliv na jednotlivý test
+
+Tak fajn, máme konkrétní test, známe jeho statistické parametry **Specificity** a **Sensitivity**, které popisjují chování testu jak celku. Jak je to ale s konkrétním testem?  **Specificity** a **Sensitivity** nám napřímo moc neřeknou, protože neznáme skutečnost - tu se právě snažíme zjistit. 
+Oba parametry se totiž používájí při vývoji testů, kdy skutečný výsledek známe a právě jejich hodnoty definují sílu testu.  Ale to v životě nevíme (proto pužíváme testy.)
+
+
+Více nám řeknou statistiky **Predictive Value of Positive Test**, nebo taky **Precision** - která počítá pravděpodobnost správného výsledku pozitivního testu a **Predictive Value of Negative Test** - což je pravděpodobnost správného výsledku negativního testu. *(Zkuste si ty vztahy odvodit sami, je to matematika základní školy)*
+
+### Příklad
+Tady si můžete vyzkoušet, jak to fungují vztahy mezi  **Specificity**, **Sensitivity**, **Predictive Value of Positive Test** a **Predictive Value of Positive Test**.
+
+```{r tabulka, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE }
+
+library(knitr)
+library(xtable)
+library(pander)
+
+inputPanel(
+  
+  sliderInput("specificity", label = "Specificity (%)",
+              min = 1, max = 100, value = 80, step = 1),
+  
+  sliderInput("sensitivity", label = "Sensitivity (%)",
+              min = 1, max = 100, value = 80, step = 1)
+)
+
+
+
+renderTable({
+
+pv_p <- input$specificity/(input$specificity + 100 - input$sensitivity)*100
+
+pv_n <- input$sensitivity/(input$sensitivity + 100 - input$specificity)*100
+
+
+df <- data.frame(Statistika = c("Predictive Value of Positive Test", "Predictive Value of Negative Test" ),
+                 Hodnoty  = c(pv_p, pv_n))
+
+
+df
+
+})
+
+
+```
+
+
+#### Co byste si měli zapamatovat
+
+6. Vztah mezi Specificity a Sensitivity a vypovídací hodnotou provedeného testu není přímočary
+
+
+
+
+## Střet s realitou
+
+
+Představte si, že jdete na vyšetření, zjistíte si předem sílu testu *(Specificity 99% a Sensitivity 98%, spočítali jste si Precision - 98% )* a test vyjde pozitivně. 
+
+Jde o AIDS. 
+
+Máte panikařit? 
+
+A jak hodně? 
+
+To záleží na tom, kde žijeme. Je pořád třeba mít na paměti, že testy mají pravděpododbnostní charakter.
+
+Pokud žijeme v bezpečné České republice, kde poměr počtu lidí majícícH HIV je 0,03% (říká se tomu **Prevalence**) je pravděpodobnost, že máme HIV v případě pozitivního testu asi 1,5%. (Pravděppodobnost v případě pozitivního testu se označuje jako **Positive Predictive Value**).
+
+Jiná situace je pro obyvatele Jižní Afriky, kde **Prevalence** HIV je 20%. Tam vyjde **Positive Predictive Value** u stejného testu 92,5%.
+
+
+Proč tomu tak je?
+
+:Českou republikou:
+|Počet obyvatetel| 10 000 000|
+|**Prevalence**  |      0.03%|
+
+
