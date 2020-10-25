@@ -34,12 +34,17 @@ colnames(confusion) <- c("A_True", "B_True")
 confusion <- as.data.frame(confusion)
 
 
+
+
 p <- ggplot(df, aes(x=Data, color=Category, fill = Category))+
       geom_histogram( alpha=0.5, position = "identity")+
       geom_vline(data=mu, aes(xintercept=grp.mean, color=Category),
                   linetype="dashed")+
-      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "dotted"), show.legend = FALSE) +
-      theme_classic()+theme(legend.position="top")
+      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "dotted"), 
+                 show.legend = FALSE) +
+      theme_classic()+
+      theme(legend.position="top")+
+      labs(caption = "Martin Slíva, (CC)")
       
 
 print(p)

@@ -204,8 +204,24 @@ Jiná situace je pro obyvatele Jižní Afriky, kde **Prevalence** HIV je 20%. Ta
 
 Proč tomu tak je?
 
-:Českou republikou:
-|Počet obyvatetel| 10 000 000|
-|**Prevalence**  |      0.03%|
+**České republika**
 
+Počet obyvatetel                              ~  10 000 000
 
+**Prevalence**                                        0.03%
+
+Počet HIV pozitivních                                 3 000
+
+Počet HIV Negativních                             9 997 000
+
+**Specificity**                                         99%
+
+**Sensitivity**                                         98%
+
+Počet správně zachycených HIV pozitivních             2 970
+
+Počet falešně nevyloučených HIV negativních         199 940
+
+Celkem testem označených                            202 910
+
+**Positive Predictive Value**                       **1,46%**
