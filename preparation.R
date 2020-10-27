@@ -40,7 +40,7 @@ p <- ggplot(df, aes(x=Data, color=Category, fill = Category))+
       geom_histogram( alpha=0.5, position = "identity")+
       geom_vline(data=mu, aes(xintercept=grp.mean, color=Category),
                   linetype="dashed")+
-      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "dotted"), 
+      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "longdash", color="blue"), 
                  show.legend = FALSE) +
       theme_classic()+
       theme(legend.position="top")+
@@ -50,3 +50,20 @@ p <- ggplot(df, aes(x=Data, color=Category, fill = Category))+
 print(p)
 print(confusion)
 
+
+df3 <- data.frame( Popis = c("Správně identifikovaní nemocní", "Mylně identifikovaní nemocní", "Správně identifikovaní zdraví", "Mylně identifikovaní zdraví"),
+                   Pocty = c(100000, 50000, 800000, 30000)
+)
+
+sub_label3 <- "Odhadované počty" 
+
+p2 <- ggplot(df3, aes(x="", y=Pocty, fill=Popis))+
+         geom_bar(width = 1, stat = "identity") +
+         coord_polar("y", start=0) +
+         geom_text(aes(y = Pocty, label = Pocty), color = "white")+
+         theme_void()+
+         labs(title = sub_label3,
+            caption = "Martin Slíva, (CC)") +
+         theme(legend.position="bottom")
+
+print(p2)

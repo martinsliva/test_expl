@@ -1,7 +1,7 @@
 ---
 title: "Testování (aut, COVID a čehokoliv)"
 author: "Martin Slíva"
-date: "10/24/2020"
+date: "10/27/2020"
 output: html_document
 runtime: shiny
 ---
@@ -20,7 +20,7 @@ Auta – všichni je máme.
 ## Nákup auta z druhé ruky.
 Pro většinu je to velká položka a černou můrou je zjištění, že auto bylo kradené a člověk tak přijde o peníze a chodí pěšky.
 
-Většina ráda zainvestuje to prověření auta v různých registrech, aby si yla jistější. Registry ale nejsou stoprocentní – auto může pocházet ze země, kde registry nejsou, jsou tam laxní úředníci, kteří toho do registru moc nezapisují. Může se taky stát, že narazíme na rychlé zloděje, kteří se snaží auto rychle prodat, než se objeví v registrech. 
+Většina ráda zainvestuje to prověření auta v různých registrech, aby si byla jistější. Registry ale nejsou stoprocentní – auto může pocházet ze země, kde registry nejsou, jsou tam laxní úředníci, kteří toho do registru moc nezapisují. Může se taky stát, že narazíme na rychlé zloděje, kteří se snaží auto rychle prodat, než se objeví v registrech. 
 
 Úředníci taky nejsou bez chyb a v registrech se mohou objevit i auta, která ve skutečnosti nejsou ukradená – překlep, nahlášení krádeže omylem (to auto jsme před pařbou určitě nechal tady, tak mi jej museli ukrást … ).
 
@@ -29,26 +29,33 @@ I přes všechny tyto nedostatky, si auto v registru prověřujeme a chceme, aby
 
 Registry ale také používá policie. 
 
-A ta má trochu jiný pohled. Noční můra policistů je zabavit omylem auto nějakému papalášovi (nebo novináři, který to rozmázne). Požadavek na registry je jiný – ať tam jsou jen ta auta o kterých víme, že jsou bezpečně ukradena. Ať klidně nějaké kradené auto tam není, jen ať tam jsou jen ukradená auta – za ty problémy to nestojí.
+A ta má trochu jiný pohled. Noční můra policistů je zabavit omylem auto nějakému papalášovi (nebo novináři, který to rozmázne). Požadavek na registry je jiný – ať tam jsou jen ta auta o kterých bezpečně víme, že jsou ukradena. Ať tam klidně nějaké kradené auto není, jen ať tam jsou jen ukradená auta – za ty problémy to nestojí.
 
 
 Všimněme si, že používáme stejný test (záznam v registrech vozidel) s rozdílnými požadavky na výsledky.  A to i s vědomím, že nejsou úplně přesné. A taky tolerujeme chybovost testů.
 
-## Zobecnění
+## Testujeme nejen auta
 
-Podobně je to s lékařskými testy *(vlastně se všmi testy)*, . Pokud pokud potřebujeme oddělit zdravé pacienty od potencionálně nemocných, nevadí nám, že část zdravých pacientů přehlédneme (říká se tomu screening). Podle výsledků testů se pacienti odesílají ke specialistům - tj. není problém, když ke specialistovi se odešle zdravý pacient, ale je problém, když test přehlédne nemocného.
+Podobně je to s lékařskými testy *(vlastně se všemi testy)*, . Pokud pokud potřebujeme oddělit zdravé pacienty od potencionálně nemocných, nevadí nám, že část zdravých pacientů přehlédneme (říká se tomu screening). Podle výsledků testů se pacienti odesílají ke specialistům - tj. není problém, když ke specialistovi se odešle zdravý pacient, ale je problém, když test přehlédne nemocného.
 Statistika, která nám říká jak je dobrý test pro tento případ měří poměr správně vyloučených  *(True Negative)* oproti všem případů, kteří nemají testovaný jev. Říká se ji **Specificity** nebo taky **Recall**. Zjednodušeně, tato statistika vyjadřuje, že test si "nevymýšlí".
 
 
-Opačná situace je, když lékař na základě testů předeisuje specifickou léčbu. Třeby když přijdete k lékaři s nějakou infekcí a lékaž si není jistý jestli je bakteriálního původu (a je možné nasadit antibiotika) nebo virového (a antibiotika spíše uškodí). Pak od testu je vyžadováno, aby co nejvíce maximalizoval poměr správně nalezených *(True Positive)* oproti všem případům s hledaným jevem. Statistika se jmenuje **Sensitivity**. Zjednošeně, tato statistíka říká, že test "nepřehlédne".
+Opačná situace je, když lékař na základě testů předeisuje přesně zaměřenou léčbu. Třeba když přijdete k lékaři s nějakou infekcí a lékař si není jistý jestli je bakteriálního původu (a je možné nasadit antibiotika) nebo virového (a antibiotika spíše uškodí). Pak je od testu vyžadováno, aby co nejvíce maximalizoval poměr správně nalezených *(True Positive)* oproti všem případům s hledaným jevem. Statistika se jmenuje **Sensitivity**. Zjednošeně, tato statistíka říká, že test "nepřehlédne".
+
 
 V ideálním případě chceme, aby **Sensitivity** a **Specificity** bylo co nejblíže jedné (100%). Jenže to nejde - nejsme s to najít veličinu, která by dokonale oddělila obě množiny (pozitvní a negativní). Třeba protilátky, které testujeme neměly dost času se vytvořit, každý organismus reaguje trochu jinak. Vždycky se výrobci snaží najít přijatelné parametry pro dané použití.  
 
 A tak jsou testy optimalizovány na jednu veličinu podle zamýšleného užití. 
 
 ### Příklad
+V tomto příkladě jste výzkumník, který se snaží optimalizovat test.
 
-V grafu níže definujete počet náhodných případů (s Normáním rozdělením), střední hodnoty  směrodatnou odchylku pro dva soubory A a B a hodnotu Tresholdu, kterým se snažíte tyto množiny oddělit. Pro každou simulaci je spočtena **Specificity** a **Sensitivity**. Tak si s tím chvíli pohrajte.
+V grafu níže si můžete vybrat počet náhodných případů (s Normáním rozdělením, aby to bylo blízko realitě), střední hodnoty  směrodatnou odchylku pro dva soubory A a B. (V reálu mají tyto dva soubory vždycky nějaké překrytí, tak nešvindlujte - nikdo vás nebude zkoušet :-))
+
+Cílem by pak mělo být najít hodnotu Tresholdu, kterým se snažíte tyto dva soubory oddělit. 
+Pro každou simulaci je spočtena **Specificity** a **Sensitivity**. 
+
+Tak si s tím chvíli pohrajte.
 
 
 
@@ -109,11 +116,11 @@ sub_label <- paste0("Testujeme přítomnost A oproti B: Sensitivity: ", round(df
 ggplot(df, aes(x=Data, color=Category, fill = Category))+
       geom_histogram( alpha=0.5, position = "identity")+
       geom_vline(data=mu, aes(xintercept=grp.mean, color=Category),
-                  linetype="dashed")+
-      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "dotted"), 
+                  linetype="dashed", show.legend = FALSE)+
+      geom_vline(data = treshold, aes(xintercept = treshold, linetype = "longdash", color="blue"), 
                  show.legend = FALSE) +
       theme_classic()+
-      theme(legend.position="top")+
+      theme(legend.position="none")+
       labs(title = sub_label,
         caption = "Martin Slíva, (CC)")
       
@@ -139,13 +146,12 @@ Oba parametry se totiž používájí při vývoji testů, kdy skutečný výsle
 Více nám řeknou statistiky **Predictive Value of Positive Test**, nebo taky **Precision** - která počítá pravděpodobnost správného výsledku pozitivního testu a **Predictive Value of Negative Test** - což je pravděpodobnost správného výsledku negativního testu. *(Zkuste si ty vztahy odvodit sami, je to matematika základní školy)*
 
 ### Příklad
-Tady si můžete vyzkoušet, jak to fungují vztahy mezi  **Specificity**, **Sensitivity**, **Predictive Value of Positive Test** a **Predictive Value of Positive Test**.
+Tady si můžete vyzkoušet, jak to fungují vztahy mezi  **Specificity**, **Sensitivity**, **Predictive Value of Positive Test** a **Predictive Value of Negtive Test**.
 
 ```{r tabulka, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE }
 
 library(knitr)
-library(xtable)
-library(pander)
+
 
 inputPanel(
   
@@ -197,31 +203,222 @@ A jak hodně?
 
 To záleží na tom, kde žijeme. Je pořád třeba mít na paměti, že testy mají pravděpododbnostní charakter.
 
-Pokud žijeme v bezpečné České republice, kde poměr počtu lidí majícícH HIV je 0,03% (říká se tomu **Prevalence**) je pravděpodobnost, že máme HIV v případě pozitivního testu asi 1,5%. (Pravděppodobnost v případě pozitivního testu se označuje jako **Positive Predictive Value**).
+Pokud žijeme v bezpečné České republice, kde poměr počtu lidí majícícH HIV k ceklové populaci je 0,03% (říká se tomu **Prevalence**) je pravděpodobnost, že máme HIV v případě pozitivního testu asi 1,5%. (Pravděppodobnost v případě pozitivního testu se označuje jako **Positive Predictive Value**).
 
-Jiná situace je pro obyvatele Jižní Afriky, kde **Prevalence** HIV je 20%. Tam vyjde **Positive Predictive Value** u stejného testu 92,5%.
+Jiná situace je ovšem pro obyvatele Jižní Afriky, kde **Prevalence** HIV je 20%. Tam vyjde **Positive Predictive Value** u stejného testu 92,5%.
 
 
-Proč tomu tak je?
 
-**České republika**
 
-Počet obyvatetel                              ~  10 000 000
+#### Proč tomu tak je?
 
-**Prevalence**                                        0.03%
 
-Počet HIV pozitivních                                 3 000
+|**České republika** | |
+|:-----|-----:|
+|Počet obyvatetel |                               ~  10 000 000 |
+|**Prevalence** |                                        0.03% |
+|Počet HIV pozitivních *(Počet obyvatel x Prevalence)* |    3 000 |
+|Počet HIV negativních  |                           9 997 000 |
+|**Specificity** |                                         99% |
+|**Sensitivity** |                                        98% |
+|Počet správně zachycených HIV pozitivních  *(Počet HIV pozitivních x Specificity) - True Positive* |   2 970 |
+|Počet falešně nevyloučených HIV negativních  *(Počet HIV negativních x (1-Sensitivity)) - False Positive* | 199 940 |
+|Celkem testem označených |                           202 910 | 
+|**Positive Predictive Value** *(Počet správně zachycených / Celkem označených )*|         **1,46%**|
 
-Počet HIV Negativních                             9 997 000
 
-**Specificity**                                         99%
 
-**Sensitivity**                                         98%
+A obdobný výpočet pro Jižní Afriku.
 
-Počet správně zachycených HIV pozitivních             2 970
 
-Počet falešně nevyloučených HIV negativních         199 940
 
-Celkem testem označených                            202 910
+|**Jižní Afrika** | |
+|:-----|-----:|
+|Počet obyvatetel |                               ~  55 000 000 |
+|**Prevalence** |                                        20% |
+|Počet HIV pozitivních *(Počet obyvatel x Prevalence)* |    11 000 000 |
+|Počet HIV negativních  |                           44 000 000 |
+|**Specificity** |                                         99% |
+|**Sensitivity** |                                        98% |
+|Počet správně zachycených HIV pozitivních  *(Počet HIV pozitivních x Specificity) - True Positive* | 10 890 000 |
+|Počet falešně nevyloučených HIV negativních  *(Počet HIV negativních x (1-Sensitivity)) - False Positive* | 880 000 |
+|Celkem testem označených |                         11 770 000 | 
+|**Positive Predictive Value** *(Počet správně zachycených / Celkem označených )*|         **92,5%**|
 
-**Positive Predictive Value**                       **1,46%**
+
+
+
+Pokud se podíváte do tabulek výše, zjistíte, že **Prevalence** má velký vliv na to, kolik test správně zachytí a také kolik test špatně nevyloučí.
+
+V případě Česka je pravděpodobnost po testu "jen" 1,46%. Ale je si potřeba uvědomit, že před testem byla ta pravděpodobnost 0.03%, takže test odahdovanou pravděpodobnost zvýšil cca 50x. Pokud je prevalence vysoká, jako v Jižní Africe
+
+
+
+#### Příklad
+
+Tady si můžete vyzkoušet jak dohromady fungují paremtry **Specificity**, **Sensitivity** a **Prevalence** na pravděpodobnost nemoci při pozitivním testu.
+
+
+
+```{r tabulka2, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE }
+
+library(knitr)
+
+
+inputPanel(
+  
+  sliderInput("specificity2", label = "Specificity (%)",
+              min = 1, max = 100, value = 80, step = 1),
+  
+  sliderInput("sensitivity2", label = "Sensitivity (%)",
+              min = 1, max = 100, value = 80, step = 1),
+  
+  sliderInput("prevalence2", label = "Prevalence (%)",
+              min = 0.01, max = 30, value = 3, step = 0.01)
+  
+)
+
+
+
+renderTable({
+
+ppv <- input$specificity2*input$prevalence2/(input$specificity2*input$prevalence2 + (100 - input$prevalence2)*(100 - input$sensitivity2))*100
+
+
+
+
+df <- data.frame(Statistika = "Positive Predictive Value (%)",
+                 Hodnota  = ppv )
+
+
+df
+
+})
+
+
+```
+
+
+#### Co byste si měli zapamatovat
+
+7. Spolehlivost výsledů testů nezávisí jen na jejich parametrech (**Specificity** a **Sensitivity**) ale také na zastoupení testovaného jevu v populaci 
+8. Vztah, který určuje spolehlivost testu není lineární a přímočary (tj. nefunguje tady moc "Selský rozum")
+
+
+### Testování populace
+
+U testování populace je opět situace trochu jiná - je to testování, kdy cílem je odhad **Prevalence**.
+K odhadu potřebujeme mít dobrý odhad **Specificity** a **Sensitivity** z předchozích testování.
+
+Je si potřeba také uvědomit, že lze zpětně odhadnout, kolik testování špatně označilo za pozitivní, kolik špatně označilo za negativní - ale nelze určit, kteří to jsou. Přesto má toto testování svůj význam - získá se představa o promořenosti populace. *(Jak s výsledky pak naložit je ale mimo tento text)*
+
+Poznámka k termínům v grafu (myslel jsem, že si jim vyhnu, ale asi to nejde). *True Positive* se označují ti, kteří mají nemoc a test je takto také označil. *False Positive* se označují ti, kteří jsou zdraví ale mají pozitivní test. *True Negative* s označují zdraví a test jejich nemoc nepotvrdil a nakonec *False Negative* se označují nemocní, u kterých test ale nemoc označil. 
+
+
+
+#### Přiklad
+
+Pro příklad jem zvolil (testovanou) populaci o velikosti 5 mil. obyvatel.
+
+*Poznámka: Graf nemá kontroly na nesmyslná vstupní data, takže tam občas mohou vyskočit záporná čísla. Je to z toho důvodu, že některé kombinace parametrů v reálném životě nemohou nastat. A protože to píšu po nocích, tak jsem líný přidat tam tu kontrolu. :-)*
+
+
+
+
+
+```{r graf2, , echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE }
+
+
+
+inputPanel(
+  
+  sliderInput("specificity3", label = "Specificity (%)",
+              min = 60, max = 100, value = 75, step = 1),
+  
+  sliderInput("sensitivity3", label = "Sensitivity (%)",
+              min = 60, max = 100, value = 95, step = 1),
+  
+  sliderInput("pozitive", label = "Počet testem identifikovaných",
+              min = 0, max = 4000000, value = 585000, step = 1000)
+  
+)
+
+
+
+
+
+renderPlot({
+  
+population  <- 5000000
+
+prevalence <- (1 - input$sensitivity3/100 - input$pozitive/population)/(1 - input$specificity3/100 - input$sensitivity3/100)
+
+positive <- round(prevalence*population)
+
+negative <- population - positive
+
+tr_positive <- round(positive*input$specificity3/100)
+
+fl_positive <- positive - tr_positive
+
+tr_negative <- round(negative*input$sensitivity3/100)
+
+fl_negative <- negative - tr_negative
+
+df3 <- data.frame( Popis = c("True Positive", "False Negative", "True Negatiive", "False Positive"),
+                   Pocty = c(tr_positive, fl_negative, tr_negative, fl_positive)
+                   )
+
+label3 <- paste0("Odhadovaná prevalence   ", round(prevalence*100,2), " %.") 
+ 
+sub_label3 <- paste0("Celkem nemocní:   ", round(positive/1000), " tis.\nCelkem zdraví:     ", round(negative/1000), " tis.") 
+
+mycols <- c("#0072B2", "#CC79A7", "#D5E000", "#56B4E9")
+
+
+ ggplot(df3, aes(x="", y=Pocty, fill=Popis))+
+         geom_bar(width = 1, stat = "identity") +
+         coord_polar("y", start=0) +
+         geom_text(aes(y = Pocty, label = Pocty), color = "white")+
+         theme_void()+
+         scale_fill_manual(values = mycols) +
+         labs(title = label3,
+              subtitle = sub_label3,
+              caption = "Martin Slíva, (CC)") +
+         theme(legend.position="bottom")
+
+      
+  
+})
+
+
+
+```
+
+
+
+
+#### Co byste si měli zapamatovat
+
+9. Testování populace má význam, i když testy nejsou úplně spolehlivé - poskytuje odhad **Prevalence** - zastoupení nemoci v populaci
+10. Testování není intuitivní disciplína a žádném případě u něj neplatí jednoduchá dedukce a "Selský rozum" (pozitvní test -> nemocen, negativní test -> zdráv). Všechny testy mají své limity a je potřeba takto k nim přistupovat (a vždy vědet jak test může selhat a jak se k tomu postavit). Je pochopitelné a omluvitelné, že to pro lidi s maturitou může být matoucí a že mohou mít problém jak nejednoznačnost výsledků testů interpretovat. Na druhou stranu, vysokoškolácí, kteří by měli mít ponětí o testech (základy statistiky jsou snad na všech vysokých školách - snad z výjimmkou uměleckých), kteří dezinterpretují charakteristiku testů jsou v lepším případě ignorati, ale spíše manipulátoři a demagogové.
+
+
+
+### Pár poznámek na konec
+Pro bystré čtenáře (šťouraly :-)
+
+Asi vám může vrtat hlavoů rozdíl mezi **Predictive Value of Positive Test** a **Positive Predictive Value**. 
+**Predictive Value of Positive Test** je charaakteristika testu, tj. nebera do úvahy **Prevalece**. Zjednodušeně řečeno předpokládá 50% zastoupení nemoci v populaci. *Má to své dobré důvody - když optimalizijete ("učíte") test, tak mu předhazujete pozitívní a negativní případy je stejnou četností (no - snažíte se).*
+
+Další věc je, že podud dostanete nějaká čísla od statistiků, vždycky tam jsou intervaly. Tady jsme, pro jednoduchost, zůstal u bodových odhadů. Jedním z důvodů je, ža ta matika za tím se nedá jednoduše vysvětlit na A4 (alespoň já to neumím).
+
+
+Doufám, že vás bavily alespň ty interaktivní grafy.
+
+
+
+
+
+
+
