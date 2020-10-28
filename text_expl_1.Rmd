@@ -312,7 +312,19 @@ K odhadu potřebujeme mít dobrý odhad **Specificity** a **Sensitivity** z pře
 
 Je si potřeba také uvědomit, že lze zpětně odhadnout, kolik testování špatně označilo za pozitivní, kolik špatně označilo za negativní - ale nelze určit, kteří to jsou. Přesto má toto testování svůj význam - získá se představa o promořenosti populace. *(Jak s výsledky pak naložit je ale mimo tento text)*
 
-Poznámka k termínům v grafu (myslel jsem, že si jim vyhnu, ale asi to nejde). *True Positive* se označují ti, kteří mají nemoc a test je takto také označil. *False Positive* se označují ti, kteří jsou zdraví ale mají pozitivní test. *True Negative* s označují zdraví a test jejich nemoc nepotvrdil a nakonec *False Negative* se označují nemocní, u kterých test ale nemoc označil. 
+Poznámka k termínům v grafu (myslel jsem, že si jim vyhnu, ale asi to nejde).
+
+Tak nejdříve, když test zafungoval správně:
+
+*True Positive* se označují ti, kteří mají nemoc a test je takto také označil. 
+
+*True Negative* s označují nemocní a test jejich nemoc nepotvrdil.
+
+A pak když se test splete:
+
+*False Positive* se označují ti, kteří jsou zdraví, ale test je označil za nemocné. 
+
+*False Negative* se označují nemocní u kterých test ale nemoc vyloučil. 
 
 
 
