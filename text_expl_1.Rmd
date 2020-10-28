@@ -250,7 +250,7 @@ A obdobný výpočet pro Jižní Afriku.
 
 Pokud se podíváte do tabulek výše, zjistíte, že **Prevalence** má velký vliv na to, kolik test správně zachytí a také kolik test špatně nevyloučí.
 
-V případě Česka je pravděpodobnost po testu "jen" 1,46%. Ale je si potřeba uvědomit, že před testem byla ta pravděpodobnost 0.03%, takže test odahdovanou pravděpodobnost zvýšil cca 50x. Pokud je prevalence vysoká, jako v Jižní Africe
+V případě Česka je pravděpodobnost po testu "jen" 1,46%. Ale je si potřeba uvědomit, že před testem byla ta pravděpodobnost 0.03%, takže test odahdovanou pravděpodobnost zvýšil cca 50x. Pokud je prevalence vysoká, jako v Jižní Africe, tak test zase identifikuje vaši pravděpodobnost blízko 100%.
 
 
 
