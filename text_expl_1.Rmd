@@ -394,7 +394,7 @@ mycols <- c("#0072B2", "#CC79A7", "#D5E000", "#56B4E9")
          coord_polar("y", start=0) +
          geom_text(aes(y = Pocty, label = Pocty), color = "white")+
          theme_void()+
-         scale_fill_manual(values = mycols) +
+         scale_fill_viridis(discrete = TRUE) +
          labs(title = label3,
               subtitle = sub_label3,
               caption = "Martin Slíva, (CC)") +
