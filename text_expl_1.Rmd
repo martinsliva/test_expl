@@ -64,6 +64,7 @@ Tak si s tím chvíli pohrajte.
 library(plyr)
 library(ggplot2)
 library(knitr)
+library(viridis)
 
 inputPanel(
   
@@ -111,7 +112,6 @@ df_Specificity <- 1-sum(df[df$Category == "B", ]$Data < treshold$treshold) / as.
 
 sub_label <- paste0("Testujeme přítomnost A oproti B: Sensitivity: ", round(df_Sensitivity*100), "%, Specificity: ", round(df_Specificity*100), "%")
 
-#sub_label <- tr
 
 ggplot(df, aes(x=Data, color=Category, fill = Category))+
       geom_histogram( alpha=0.5, position = "identity")+
@@ -122,7 +122,8 @@ ggplot(df, aes(x=Data, color=Category, fill = Category))+
       theme_classic()+
       theme(legend.position="none")+
       labs(title = sub_label,
-        caption = "Martin Slíva, (CC)")
+        caption = "Martin Slíva, (CC)")+
+      scale_fill_viridis(discrete = TRUE)
       
   
 })
