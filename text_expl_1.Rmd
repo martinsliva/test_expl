@@ -340,7 +340,7 @@ Pro příklad jem zvolil (testovanou) populaci o velikosti 5 mil. obyvatel.
 
 
 ```{r graf2, , echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE }
-
+library(ggrepel)
 
 
 inputPanel(
@@ -384,15 +384,14 @@ df3 <- data.frame( Popis = c("True Positive", "False Negative", "True Negatiive"
 
 label3 <- paste0("Odhadovaná prevalence   ", round(prevalence*100,2), " %.") 
  
-sub_label3 <- paste0("Celkem nemocní:   ", round(positive/1000), " tis.\nCelkem zdraví:     ", round(negative/1000), " tis.") 
+sub_label3 <- paste0("Celkem nemocní:   ", format(round(positive/1000), big.mark=" "), " tis.\nCelkem zdraví:     ", format(round(negative/1000),big.mark=" "), " tis.") 
 
-mycols <- c("#0072B2", "#CC79A7", "#D5E000", "#56B4E9")
 
 
  ggplot(df3, aes(x="", y=Pocty, fill=Popis))+
          geom_bar(width = 1, stat = "identity") +
          coord_polar("y", start=0) +
-         geom_text(aes(y = Pocty, label = Pocty), color = "white")+
+         geom_text_repel(aes(label = format(Pocty, big.mark=" ")), size= 6, color="red") +
          theme_void()+
          scale_fill_viridis(discrete = TRUE) +
          labs(title = label3,
@@ -400,10 +399,7 @@ mycols <- c("#0072B2", "#CC79A7", "#D5E000", "#56B4E9")
               caption = "Martin Slíva, (CC)") +
          theme(legend.position="bottom")
 
-      
-  
 })
-
 
 
 ```
@@ -428,8 +424,6 @@ Další věc je, že podud dostanete nějaká čísla od statistiků, vždycky t
 
 
 Doufám, že vás bavily alespň ty interaktivní grafy.
-
-
 
 
 
