@@ -59,7 +59,7 @@ Tak si s tím chvíli pohrajte.
 
 
 
-```{r graf, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+```{r graf, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 
 library(plyr)
 library(ggplot2)
@@ -391,7 +391,7 @@ sub_label3 <- paste0("Celkem nemocní:   ", format(round(positive/1000), big.mar
  ggplot(df3, aes(x="", y=Pocty, fill=Popis))+
          geom_bar(width = 1, stat = "identity") +
          coord_polar("y", start=0) +
-         geom_text_repel(aes(label = format(Pocty, big.mark=" ")), size= 6, color="red") +
+         geom_text_repel(aes(label = format(Pocty, big.mark=" ")), size= 5, color="red") +
          theme_void()+
          scale_fill_viridis(discrete = TRUE) +
          labs(title = label3,
@@ -418,9 +418,10 @@ sub_label3 <- paste0("Celkem nemocní:   ", format(round(positive/1000), big.mar
 Pro bystré čtenáře (šťouraly :-)
 
 Asi vám může vrtat hlavoů rozdíl mezi **Predictive Value of Positive Test** a **Positive Predictive Value**. 
-**Predictive Value of Positive Test** je charaakteristika testu, tj. nebera do úvahy **Prevalece**. Zjednodušeně řečeno předpokládá 50% zastoupení nemoci v populaci. *Má to své dobré důvody - když optimalizijete ("učíte") test, tak mu předhazujete pozitívní a negativní případy je stejnou četností (no - snažíte se).*
 
-Další věc je, že podud dostanete nějaká čísla od statistiků, vždycky tam jsou intervaly. Tady jsme, pro jednoduchost, zůstal u bodových odhadů. Jedním z důvodů je, ža ta matika za tím se nedá jednoduše vysvětlit na A4 (alespoň já to neumím).
+**Predictive Value of Positive Test** je charaakteristika testu, tj. nebera do úvahy **Prevalece**. Zjednodušeně řečeno předpokládá 50% zastoupení nemoci v populaci. *Má to své dobré důvody - když optimalizijete ("učíte") test, tak mu předhazujete pozitívní a negativní případy se stejnou četností (no - snažíte se).*
+
+Další věc je, že podud dostanete nějaká čísla od statistiků, vždycky tam jsou intervaly. Tady jsem, pro jednoduchost, zůstal u bodových odhadů. Jedním z důvodů je, ža ta matika za tím se nedá jednoduše vysvětlit na A4 (alespoň já to neumím).
 
 
 Doufám, že vás bavily alespň ty interaktivní grafy.
